@@ -5,7 +5,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="wikitojson",
-    version="0.0.2",
+    version="0.0.3",
     author="Klaifer Garcia",
     description="Wikipedia(English) to json",
     long_description=long_description,
