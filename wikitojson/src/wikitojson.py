@@ -34,8 +34,8 @@ def _getsections(content):
     name = "intro"
     level = 1
 
-    for text in re.split("(=+.*=+)", content):
-        title = re.search("(=+)([^=]*)=+", text)
+    for text in re.split("(\n *=+[^\n=]*=+ *\n)", "\n"+content+"\n"):
+        title = re.search("\n *(=+)([^\n=]*)=+ *\n", text)
         if title:
             if name:
                 data.append({

@@ -612,5 +612,81 @@ class WikiTest(unittest.TestCase):
             'content': "paragraph section 1",
         })
 
+    def test_equation(self):
+        content = """        
+        == Nucleus ==
+        E
+        =
+        m
+        c
+        2
+        {\\displaystyle E=mc^{2}}      
+        
+        == Electron cloud ==
+        """
+        result = wikitojson.getdict(content)
+        self.assertEqual(1, len(result))
+        self.assertDictEqual(result[0], {
+            'name': 'intro',
+            'content': "",
+            'subsections': [
+                {
+                    'name': 'Nucleus',
+                    'content': """E
+        =
+        m
+        c
+        2
+        {\\displaystyle E=mc^{2}}"""
+                },
+                {
+                    'name': 'Electron cloud',
+                    'content': ''
+                }
+            ]
+        })
+
+    def test_sectionwithoutlinebreak1(self):
+        content = """== section ==
+        content section
+        """
+        result = wikitojson.getdict(content)
+        self.assertEqual(1, len(result))
+        self.assertDictEqual(result[0], {
+            'name': 'intro',
+            'content': '',
+            'subsections': [
+                {'name': 'section', 'content': 'content section'}
+            ]
+        })
+
+    def test_sectionwithoutlinebreak2(self):
+        content = """
+        == section =="""
+        result = wikitojson.getdict(content)
+        self.assertEqual(1, len(result))
+        self.assertDictEqual(result[0], {
+            'name': 'intro',
+            'content': '',
+            'subsections': [
+                {'name': 'section', 'content': ''}
+            ]
+        })
+
+    def test_sectionwithoutspace(self):
+        content = """
+        ==section==
+        content section
+        """
+        result = wikitojson.getdict(content)
+        self.assertEqual(1, len(result))
+        self.assertDictEqual(result[0], {
+            'name': 'intro',
+            'content': '',
+            'subsections': [
+                {'name': 'section', 'content': 'content section'}
+            ]
+        })
+
 if __name__ == '__main__':
     unittest.main()
